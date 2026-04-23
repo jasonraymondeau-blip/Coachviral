@@ -154,26 +154,28 @@ export default function PostsPage() {
         {/* URL Import */}
         <Card className="mb-6 border-violet-500/20">
           <CardContent className="p-4 space-y-3">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 mb-2">
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#833AB4] to-[#FD1D1D] flex items-center justify-center shrink-0">
                 <Link2 className="w-4 h-4 text-white" />
               </div>
-              <span className="text-sm font-medium text-white shrink-0">Importer par URL</span>
+              <span className="text-sm font-medium text-white">Importer par URL</span>
+            </div>
+            <div className="flex gap-2">
               <input
                 type="url"
-                placeholder="https://www.instagram.com/p/XXXXX/ ou /reel/XXXXX/"
+                placeholder="instagram.com/p/XXXXX/"
                 value={urlInput}
                 onChange={e => { setUrlInput(e.target.value); setUrlError(''); }}
                 onKeyDown={e => e.key === 'Enter' && !urlLoading && handleUrlImport()}
-                className="flex-1 rounded-xl bg-[#1A1A24] border border-[#2A2A3A] px-4 py-2 text-sm text-white placeholder:text-[#7A7A9D] outline-none focus:border-violet-500/60 focus:ring-2 focus:ring-violet-500/20 transition-all"
+                className="flex-1 min-w-0 rounded-xl bg-[#1A1A24] border border-[#2A2A3A] px-3 py-2 text-sm text-white placeholder:text-[#7A7A9D] outline-none focus:border-violet-500/60 focus:ring-2 focus:ring-violet-500/20 transition-all"
               />
               <Button onClick={handleUrlImport} disabled={urlLoading || !urlInput.trim()} variant="secondary" className="shrink-0">
                 {urlLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
-                Ouvrir
+                <span className="hidden sm:inline">Ouvrir</span>
               </Button>
             </div>
-            {urlError && <p className="text-red-400 text-xs ml-11">{urlError}</p>}
-            <p className="text-[#7A7A9D] text-xs ml-11">
+            {urlError && <p className="text-red-400 text-xs">{urlError}</p>}
+            <p className="text-[#7A7A9D] text-xs">
               Le post s&apos;affiche ici → copie la caption → remplis les métriques depuis ton app Instagram
             </p>
           </CardContent>
@@ -290,33 +292,39 @@ export default function PostsPage() {
                 exit={{ opacity: 0, x: -20 }} transition={{ delay: idx * 0.04 }}>
                 <Card className={post.id === topPostId && post.analysis ? 'border-amber-500/30' : ''}>
                   <CardContent className="p-0">
-                    <div className="flex items-center gap-4 p-5">
-                      <div className="flex items-center gap-3 flex-1 min-w-0">
-                        <Badge variant={post.type === 'Reel' ? 'violet' : post.type === 'Carrousel' ? 'pink' : 'outline'}>
-                          {post.type}
-                        </Badge>
-                        <div className="min-w-0">
-                          <p className="text-white font-medium truncate">{post.theme || post.caption?.slice(0, 50) || 'Post sans titre'}</p>
-                          <p className="text-[#7A7A9D] text-xs">{new Date(post.date).toLocaleDateString('fr-FR')}</p>
+                    <div className="p-4 md:p-5">
+                      {/* Ligne 1 : info + actions icônes */}
+                      <div className="flex items-start gap-3">
+                        <div className="flex items-center gap-2 flex-1 min-w-0">
+                          <Badge variant={post.type === 'Reel' ? 'violet' : post.type === 'Carrousel' ? 'pink' : 'outline'} className="shrink-0">
+                            {post.type}
+                          </Badge>
+                          <div className="min-w-0">
+                            <p className="text-white font-medium truncate text-sm">{post.theme || post.caption?.slice(0, 50) || 'Post sans titre'}</p>
+                            <p className="text-[#7A7A9D] text-xs">{new Date(post.date).toLocaleDateString('fr-FR')}</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2 shrink-0">
+                          <button onClick={() => setExpandedId(expandedId === post.id ? null : post.id)}
+                            className="text-[#7A7A9D] hover:text-white transition-colors p-1">
+                            {expandedId === post.id ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                          </button>
+                          <button onClick={() => handleDelete(post.id)} className="text-[#7A7A9D] hover:text-red-400 transition-colors p-1">
+                            <Trash2 className="w-4 h-4" />
+                          </button>
                         </div>
                       </div>
-                      <div className="flex items-center gap-3">
+                      {/* Ligne 2 : métriques + bouton analyser */}
+                      <div className="flex items-center gap-2 mt-2 flex-wrap">
                         {post.likes !== undefined && <span className="text-xs text-[#7A7A9D]">❤️ {post.likes}</span>}
                         {post.id === topPostId && post.analysis && (
                           <Badge variant="warning" className="gap-1"><Trophy className="w-3 h-3" />Top</Badge>
                         )}
                         {post.analysis && <ScoreBadge score={post.analysis.score} />}
-                        <Button variant="secondary" size="sm" onClick={() => handleAnalyze(post)} disabled={analyzingId === post.id}>
+                        <Button variant="secondary" size="sm" onClick={() => handleAnalyze(post)} disabled={analyzingId === post.id} className="ml-auto">
                           {analyzingId === post.id ? <Spinner size="sm" /> : <Sparkles className="w-4 h-4" />}
                           {post.analysis ? 'Ré-analyser' : 'Analyser'}
                         </Button>
-                        <button onClick={() => setExpandedId(expandedId === post.id ? null : post.id)}
-                          className="text-[#7A7A9D] hover:text-white transition-colors">
-                          {expandedId === post.id ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
-                        </button>
-                        <button onClick={() => handleDelete(post.id)} className="text-[#7A7A9D] hover:text-red-400 transition-colors">
-                          <Trash2 className="w-4 h-4" />
-                        </button>
                       </div>
                     </div>
 

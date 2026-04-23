@@ -274,10 +274,10 @@ export default function ImportPage() {
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-1 mb-6 p-1 bg-[#13131A] rounded-xl border border-[#2A2A3A]">
+        <div className="flex gap-1 mb-6 p-1 bg-[#13131A] rounded-xl border border-[#2A2A3A] overflow-hidden">
           {tabs.map(tab => (
             <button key={tab.id} onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-lg text-xs font-medium transition-all duration-200 cursor-pointer flex-1 ${
+              className={`flex items-center justify-center gap-1 px-2 py-2 md:px-3 md:py-2.5 rounded-lg text-xs font-medium transition-all duration-200 cursor-pointer flex-1 min-w-0 ${
                 activeTab === tab.id ? 'bg-gradient-to-r from-violet-600 to-pink-600 text-white' : 'text-[#7A7A9D] hover:text-white'
               }`}>
               <tab.icon className="w-4 h-4 shrink-0" />
