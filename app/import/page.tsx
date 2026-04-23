@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Upload, CheckCircle, AlertCircle, FileJson, ArrowRight,
   Smartphone, Download, Package, Camera, Image, X,
-  Sparkles, TrendingUp, User, Key, ExternalLink, RefreshCw,
+  Sparkles, TrendingUp, User, RefreshCw,
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -107,10 +107,6 @@ export default function ImportPage() {
 
   // Username scraping tab
   const [username, setUsername] = useState('');
-  const [apifyToken, setApifyToken] = useState(() =>
-    typeof window !== 'undefined' ? localStorage.getItem('viralcoach_apify_token') || '' : ''
-  );
-  const [showKeyInput, setShowKeyInput] = useState(false);
   const [scraping, setScraping] = useState(false);
   const [scrapeError, setScrapeError] = useState('');
   const [scrapedPosts, setScrapedPosts] = useState<ParsedPost[]>([]);
@@ -132,12 +128,7 @@ export default function ImportPage() {
   // ── Username scrape ──────────────────────────────────────────────────────────
 
   const handleScrape = async () => {
-    const token = apifyToken.trim();
-    if (!token) { setShowKeyInput(true); return; }
     if (!username.trim()) return;
-
-    // Sauvegarder le token
-    localStorage.setItem('viralcoach_apify_token', token);
 
     setScraping(true);
     setScrapeError('');
@@ -145,9 +136,7 @@ export default function ImportPage() {
     setScrapedProfile(null);
 
     try {
-      const res = await fetch(`/api/instagram/apify?username=${encodeURIComponent(username.replace('@', ''))}`, {
-        headers: { 'x-apify-token': token },
-      });
+      const res = await fetch(`/api/instagram/apify?username=${encodeURIComponent(username.replace('@', ''))}`);
       const data = await res.json();
 
       if (!res.ok || data.error) {
@@ -321,7 +310,7 @@ export default function ImportPage() {
                 </motion.div>
               ) : (
                 <>
-                  {/* Guide Apify */}
+                  {/* Import automatique */}
                   <Card className="border-violet-500/20">
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
@@ -329,41 +318,15 @@ export default function ImportPage() {
                         Import automatique depuis ton @username
                       </CardTitle>
                       <CardDescription>
-                        Utilise Apify (gratuit · $5 de crédit/mois offerts) pour récupérer tous tes posts avec likes, commentaires et vues
+                        Récupère tous tes posts avec likes, commentaires et vues en ~30 secondes
                       </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                      {/* Steps */}
-                      <div className="rounded-xl bg-[#0D0D14] border border-[#2A2A3A] p-4 space-y-3">
-                        <p className="text-xs font-semibold text-violet-400 uppercase tracking-wide">Comment obtenir ton token gratuit (2 min)</p>
-                        {[
-                          { n: 1, t: 'Crée un compte sur apify.com', d: 'Clique "Sign Up" — entièrement gratuit, $5 de crédit offerts', link: 'https://apify.com/sign-up' },
-                          { n: 2, t: 'Va dans Settings → Integrations', d: 'Dans le menu en haut à droite sur ton profil', link: 'https://console.apify.com/account/integrations' },
-                          { n: 3, t: 'Copie ton "Personal API token"', d: 'C\'est la longue chaîne commençant par "apify_api_..."' },
-                          { n: 4, t: 'Colle-le ci-dessous et lance l\'import', d: 'C\'est tout — tes posts arrivent en ~30 secondes !' },
-                        ].map(s => (
-                          <div key={s.n} className="flex items-start gap-3">
-                            <div className="w-6 h-6 rounded-full bg-gradient-to-br from-violet-600 to-pink-600 flex items-center justify-center text-xs font-bold text-white shrink-0 mt-0.5">{s.n}</div>
-                            <div className="flex-1">
-                              <div className="flex items-center gap-2">
-                                <p className="text-white text-sm font-medium">{s.t}</p>
-                                {'link' in s && s.link && (
-                                  <a href={s.link} target="_blank" rel="noopener noreferrer"
-                                    className="text-violet-400 hover:text-violet-300 transition-colors" onClick={e => e.stopPropagation()}>
-                                    <ExternalLink className="w-3.5 h-3.5" />
-                                  </a>
-                                )}
-                              </div>
-                              <p className="text-[#7A7A9D] text-xs">{s.d}</p>
-                            </div>
-                          </div>
-                        ))}
-                        <div className="rounded-lg bg-emerald-500/10 border border-emerald-500/20 p-2.5 mt-1">
-                          <p className="text-xs text-emerald-400">✅ Apify respecte les CGU — fonctionne sur tous les comptes publics</p>
-                        </div>
+                      <div className="rounded-xl bg-[#0D0D14] border border-[#2A2A3A] p-4 space-y-2">
+                        <p className="text-xs text-emerald-400 font-medium">✅ Fonctionne sur tous les comptes Instagram publics</p>
+                        <p className="text-xs text-[#7A7A9D]">Assure-toi que ton compte n&apos;est pas en mode privé sur Instagram.</p>
                       </div>
 
-                      {/* Input fields */}
                       <div className="space-y-3">
                         <Input
                           label="Ton @username Instagram"
@@ -372,30 +335,6 @@ export default function ImportPage() {
                           onChange={e => setUsername(e.target.value)}
                           onKeyDown={e => e.key === 'Enter' && handleScrape()}
                         />
-
-                        <div>
-                          <div className="flex items-center justify-between mb-1">
-                            <label className="text-sm font-medium text-white">Token Apify</label>
-                            <button onClick={() => setShowKeyInput(v => !v)} className="text-xs text-[#7A7A9D] hover:text-violet-400 transition-colors flex items-center gap-1">
-                              <Key className="w-3 h-3" />
-                              {apifyToken ? 'Modifier le token' : 'Ajouter mon token'}
-                            </button>
-                          </div>
-                          {(showKeyInput || !apifyToken) && (
-                            <Input
-                              placeholder="Colle ton token Apify ici... (apify_api_...)"
-                              value={apifyToken}
-                              onChange={e => setApifyToken(e.target.value)}
-                              type="password"
-                            />
-                          )}
-                          {apifyToken && !showKeyInput && (
-                            <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-emerald-500/5 border border-emerald-500/20">
-                              <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0" />
-                              <p className="text-xs text-emerald-400">Token Apify sauvegardé</p>
-                            </div>
-                          )}
-                        </div>
 
                         <Button
                           onClick={handleScrape}
@@ -414,9 +353,6 @@ export default function ImportPage() {
                           <div>
                             <p className="text-red-300 text-sm font-medium">Erreur</p>
                             <p className="text-red-300/70 text-xs mt-1">{scrapeError}</p>
-                            {scrapeError.toLowerCase().includes('token') && (
-                              <p className="text-xs text-[#7A7A9D] mt-2">→ Ton token doit commencer par &quot;apify_api_&quot; — vérifie dans console.apify.com → Settings → Integrations</p>
-                            )}
                             {scrapeError.toLowerCase().includes('privé') && (
                               <p className="text-xs text-[#7A7A9D] mt-2">→ L&apos;import ne fonctionne que sur les comptes Instagram publics</p>
                             )}

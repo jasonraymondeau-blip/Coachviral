@@ -31,8 +31,8 @@ export async function GET(request: NextRequest) {
   const username = request.nextUrl.searchParams.get('username');
   if (!username) return NextResponse.json({ error: 'Username manquant' }, { status: 400 });
 
-  const token = request.headers.get('x-apify-token') || process.env.APIFY_TOKEN;
-  if (!token) return NextResponse.json({ error: "Token Apify manquant. Entre ton token dans la page d'import." }, { status: 500 });
+  const token = process.env.APIFY_TOKEN;
+  if (!token) return NextResponse.json({ error: 'Service de scraping non configuré. Contacte le support.' }, { status: 500 });
 
   const cleanUsername = username.replace('@', '').trim();
 
