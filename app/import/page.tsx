@@ -282,7 +282,7 @@ export default function ImportPage() {
               }`}>
               <tab.icon className="w-4 h-4 shrink-0" />
               <span className="sm:hidden">{tab.label}</span>
-              <span className="hidden sm:inline">{'labelFull' in tab ? tab.labelFull : tab.label}</span>
+              <span className="hidden sm:inline">{tab.labelFull}</span>
               {'badge' in tab && tab.badge && activeTab !== tab.id && (
                 <span className="hidden md:inline text-[10px] px-1 py-0.5 rounded-md bg-emerald-500/20 text-emerald-400">✓</span>
               )}
