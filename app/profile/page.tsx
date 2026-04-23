@@ -75,14 +75,14 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="p-8 max-w-3xl mx-auto">
+    <div className="p-4 md:p-8 max-w-3xl mx-auto">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-600 to-pink-600 flex items-center justify-center">
               <User className="w-5 h-5 text-white" />
             </div>
-            <h1 className="font-heading text-2xl font-bold text-white">Profil Instagram</h1>
+            <h1 className="font-heading text-xl md:text-2xl font-bold text-white">Profil Instagram</h1>
           </div>
           <p className="text-[#7A7A9D]">Ces informations sont utilisées par Claude pour personnaliser tous tes conseils</p>
         </div>
@@ -136,7 +136,7 @@ export default function ProfilePage() {
               <CardDescription>Ton état actuel sur Instagram</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <Input
                   id="followers"
                   label="Abonnés"

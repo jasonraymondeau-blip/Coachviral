@@ -74,14 +74,14 @@ export default function IdeasPage() {
     : savedIdeas;
 
   return (
-    <div className="p-8">
+    <div className="p-4 md:p-8">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center gap-3 mb-8">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-600 to-pink-600 flex items-center justify-center">
             <Lightbulb className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h1 className="font-heading text-2xl font-bold text-white">Idées Virales</h1>
+            <h1 className="font-heading text-xl md:text-2xl font-bold text-white">Idées Virales</h1>
             <p className="text-[#7A7A9D] text-sm">Génère et sauvegarde des idées de posts virales</p>
           </div>
         </div>
@@ -93,7 +93,7 @@ export default function IdeasPage() {
             <CardDescription>Claude va générer 5 idées personnalisées pour ton profil</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <Select
                 label="Format cible"
                 options={POST_TYPES}
@@ -225,7 +225,7 @@ export default function IdeasPage() {
               <p className="text-[#7A7A9D] text-sm">Génère des idées et sauvegarde celles qui t&apos;inspirent</p>
             </div>
           ) : (
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {filteredSaved.map((idea, idx) => {
                 const scoreColor = getScoreColor(idea.viralScore);
                 return (

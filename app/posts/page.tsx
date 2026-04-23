@@ -130,19 +130,19 @@ export default function PostsPage() {
   };
 
   return (
-    <div className="p-8">
+    <div className="p-4 md:p-8">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between mb-6">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-600 to-pink-600 flex items-center justify-center">
               <FileText className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h1 className="font-heading text-2xl font-bold text-white">Mes Posts</h1>
+              <h1 className="font-heading text-xl md:text-2xl font-bold text-white">Mes Posts</h1>
               <p className="text-[#7A7A9D] text-sm">{posts.length} post{posts.length !== 1 ? 's' : ''}</p>
             </div>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             <Select options={SORT_OPTIONS} value={sortBy} onChange={e => setSortBy(e.target.value)} className="w-40" />
             <Button onClick={() => { setShowForm(v => !v); setEmbedUrl(''); setUrlError(''); }}>
               {showForm ? <X className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
@@ -254,7 +254,7 @@ export default function PostsPage() {
                       <p className="text-sm font-medium text-[#F1F0FF] mb-2">
                         Métriques <span className="text-[#7A7A9D] font-normal text-xs">(depuis ton app Instagram)</span>
                       </p>
-                      <div className="grid grid-cols-4 gap-2">
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
                         <Input label="Likes" type="number" placeholder="0"
                           value={form.likes || ''} onChange={e => setForm(f => ({ ...f, likes: Number(e.target.value) || undefined }))} />
                         <Input label="Commentaires" type="number" placeholder="0"
@@ -341,7 +341,7 @@ export default function PostsPage() {
                                   <ScoreBadge score={post.analysis.score} />
                                   <p className="text-sm text-[#7A7A9D]">{post.analysis.justification}</p>
                                 </div>
-                                <div className="grid grid-cols-3 gap-3">
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                                   <div><p className="text-xs font-medium text-emerald-400 mb-1">✓ Forces</p><ul className="space-y-1">{post.analysis.strengths.map((s, i) => <li key={i} className="text-xs text-[#7A7A9D]">• {s}</li>)}</ul></div>
                                   <div><p className="text-xs font-medium text-red-400 mb-1">✗ Faiblesses</p><ul className="space-y-1">{post.analysis.weaknesses.map((w, i) => <li key={i} className="text-xs text-[#7A7A9D]">• {w}</li>)}</ul></div>
                                   <div><p className="text-xs font-medium text-violet-400 mb-1">→ Améliorations</p><ul className="space-y-1">{post.analysis.improvements.map((imp, i) => <li key={i} className="text-xs text-[#7A7A9D]">• {imp}</li>)}</ul></div>

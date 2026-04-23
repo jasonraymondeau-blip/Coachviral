@@ -146,14 +146,14 @@ export default function ScriptsPage() {
   ] as const;
 
   return (
-    <div className="p-8">
+    <div className="p-4 md:p-8">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center gap-3 mb-8">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-600 to-pink-600 flex items-center justify-center">
             <PenTool className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h1 className="font-heading text-2xl font-bold text-white">Scripts & Captions</h1>
+            <h1 className="font-heading text-xl md:text-2xl font-bold text-white">Scripts & Captions</h1>
             <p className="text-[#7A7A9D] text-sm">Génère, optimise et score ton contenu avant publication</p>
           </div>
         </div>
@@ -178,7 +178,7 @@ export default function ScriptsPage() {
             {mode === 'script' && (
               <motion.div key="script" initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 10 }}
                 className="col-span-12 grid grid-cols-12 gap-6">
-                <div className="col-span-5 space-y-4">
+                <div className="col-span-12 md:col-span-5 space-y-4">
                   <Card>
                     <CardHeader>
                       <CardTitle>Script Reel</CardTitle>
@@ -254,7 +254,7 @@ export default function ScriptsPage() {
                   )}
                 </div>
 
-                <div className="col-span-7">
+                <div className="col-span-12 md:col-span-7">
                   <AnimatePresence>
                     {script && (
                       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
@@ -317,7 +317,7 @@ export default function ScriptsPage() {
             {mode === 'caption' && (
               <motion.div key="caption" initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }}
                 className="col-span-12 grid grid-cols-12 gap-6">
-                <div className="col-span-5 space-y-4">
+                <div className="col-span-12 md:col-span-5 space-y-4">
                   <Card>
                     <CardHeader>
                       <CardTitle>Caption Instagram</CardTitle>
@@ -381,7 +381,7 @@ export default function ScriptsPage() {
                   )}
                 </div>
 
-                <div className="col-span-7">
+                <div className="col-span-12 md:col-span-7">
                   <AnimatePresence>
                     {caption && (
                       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
@@ -468,7 +468,7 @@ export default function ScriptsPage() {
             {mode === 'scorer' && (
               <motion.div key="scorer" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
                 className="col-span-12 grid grid-cols-12 gap-6">
-                <div className="col-span-5">
+                <div className="col-span-12 md:col-span-5">
                   <Card>
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
@@ -503,7 +503,7 @@ export default function ScriptsPage() {
                   </Card>
                 </div>
 
-                <div className="col-span-7">
+                <div className="col-span-12 md:col-span-7">
                   <AnimatePresence>
                     {scored && (
                       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
@@ -538,7 +538,7 @@ export default function ScriptsPage() {
                         <Card>
                           <CardHeader><CardTitle>Analyse détaillée</CardTitle></CardHeader>
                           <CardContent>
-                            <div className="grid grid-cols-3 gap-4">
+                            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                               <ScoreRing value={scored.hookStrength} label="Force du Hook" />
                               <ScoreRing value={scored.messageClarity} label="Clarté" />
                               <ScoreRing value={scored.emotionalImpact} label="Impact émotionnel" />

@@ -272,14 +272,14 @@ export default function ImportPage() {
   ] as const;
 
   return (
-    <div className="p-8 max-w-4xl mx-auto">
+    <div className="p-4 md:p-8 max-w-4xl mx-auto">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center gap-3 mb-8">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-600 to-pink-600 flex items-center justify-center">
             <Download className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h1 className="font-heading text-2xl font-bold text-white">Import de données</h1>
+            <h1 className="font-heading text-xl md:text-2xl font-bold text-white">Import de données</h1>
             <p className="text-[#7A7A9D] text-sm">Récupère automatiquement tes posts Instagram avec likes et commentaires</p>
           </div>
         </div>
@@ -654,7 +654,7 @@ export default function ImportPage() {
                           <Button onClick={saveScreenshotMetrics}><CheckCircle className="w-4 h-4" />Sauvegarder les métriques</Button>
                         )}
                       </div>
-                      <div className="grid grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {screenshots.map(ss => (
                           <motion.div key={ss.preview} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}>
                             <Card className={`overflow-hidden ${ss.error ? 'border-red-500/20' : ss.metrics ? 'border-emerald-500/20' : 'border-[#2A2A3A]'}`}>

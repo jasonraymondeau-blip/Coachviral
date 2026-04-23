@@ -105,22 +105,22 @@ export default function DashboardPage() {
   const hasStyle = !!profile?.styleProfile;
 
   return (
-    <div className="p-8">
+    <div className="p-4 md:p-8">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-600 to-pink-600 flex items-center justify-center">
               <LayoutDashboard className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h1 className="font-heading text-2xl font-bold text-white">
+              <h1 className="font-heading text-xl md:text-2xl font-bold text-white">
                 Bonjour{igUsername ? `, @${igUsername}` : profile?.username ? `, @${profile.username}` : ''} 👋
               </h1>
               <p className="text-[#7A7A9D] text-sm">Dashboard — métriques calculées depuis tes posts réels</p>
             </div>
           </div>
           {hasPosts && (
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-3">
               {hasStyle && (
                 <div className="flex items-center gap-2 rounded-xl bg-violet-500/10 border border-violet-500/20 px-3 py-2">
                   <Brain className="w-4 h-4 text-violet-400" />
@@ -142,13 +142,13 @@ export default function DashboardPage() {
 
       {!hasPosts && (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-6">
-          <div className="rounded-2xl bg-gradient-to-r from-violet-600/10 to-pink-600/10 border border-violet-500/30 p-5 flex items-center gap-4">
+          <div className="rounded-2xl bg-gradient-to-r from-violet-600/10 to-pink-600/10 border border-violet-500/30 p-5 flex flex-col gap-3 md:flex-row md:items-center">
             <AlertCircle className="w-5 h-5 text-violet-400 shrink-0" />
             <div>
               <p className="text-white font-medium">Ajoute tes posts pour des métriques réelles</p>
               <p className="text-[#7A7A9D] text-sm">Import via ZIP Instagram ou ajoute manuellement</p>
             </div>
-            <div className="flex gap-2 ml-auto">
+            <div className="flex flex-wrap gap-2 md:ml-auto">
               <Link href="/import"><Button size="sm" variant="secondary">Importer</Button></Link>
               <Link href="/posts"><Button size="sm">Ajouter</Button></Link>
             </div>
@@ -157,13 +157,13 @@ export default function DashboardPage() {
       )}
       {hasPosts && !hasMetrics && (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-6">
-          <div className="rounded-2xl bg-amber-500/10 border border-amber-500/20 p-5 flex items-center gap-4">
+          <div className="rounded-2xl bg-amber-500/10 border border-amber-500/20 p-5 flex flex-col gap-3 md:flex-row md:items-center">
             <AlertCircle className="w-5 h-5 text-amber-400 shrink-0" />
             <div>
               <p className="text-white font-medium">Ajoute les likes/commentaires à tes posts</p>
               <p className="text-[#7A7A9D] text-sm">Ou importe des screenshots Insights pour les remplir automatiquement.</p>
             </div>
-            <div className="flex gap-2 ml-auto">
+            <div className="flex flex-wrap gap-2 md:ml-auto">
               <Link href="/import"><Button size="sm" variant="secondary">Screenshots</Button></Link>
               <Link href="/posts"><Button size="sm">Mes posts</Button></Link>
             </div>
@@ -173,7 +173,7 @@ export default function DashboardPage() {
 
       <motion.div variants={container} initial="hidden" animate="show" className="grid grid-cols-12 gap-6">
         {/* Virality Score */}
-        <motion.div variants={item} className="col-span-4">
+        <motion.div variants={item} className="col-span-12 md:col-span-4">
           <Card className="h-full flex flex-col">
             <CardHeader>
               <CardTitle>Score de Viralité</CardTitle>
@@ -204,7 +204,7 @@ export default function DashboardPage() {
         </motion.div>
 
         {/* Metrics Grid */}
-        <motion.div variants={item} className="col-span-8">
+        <motion.div variants={item} className="col-span-12 md:col-span-8">
           <div className="grid grid-cols-2 gap-4 h-full">
             {[
               { label: 'Taux d\'engagement', value: hasMetrics ? `${metrics.engagementRate}%` : '—', sub: hasMetrics ? 'calculé depuis tes posts' : 'ajoute les likes/comments', icon: TrendingUp, color: 'violet', badge: hasMetrics ? (metrics.engagementRate > 5 ? ('success' as const) : metrics.engagementRate > 2 ? ('warning' as const) : ('danger' as const)) : undefined, badgeLabel: hasMetrics ? (metrics.engagementRate > 5 ? 'Excellent' : metrics.engagementRate > 2 ? 'Bon' : 'Faible') : undefined },
@@ -260,7 +260,7 @@ export default function DashboardPage() {
                   <span className="text-[#7A7A9D] text-sm">Claude prépare ton brief du jour...</span>
                 </div>
               ) : coach ? (
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {[
                     { icon: CheckCircle2, color: 'emerald', label: 'Action du jour', text: coach.action },
                     { icon: XCircle, color: 'red', label: 'Erreur à éviter', text: coach.mistake },
@@ -296,7 +296,7 @@ export default function DashboardPage() {
                 <CardDescription>{profile.styleProfile.writingPersonality}</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-3 gap-4 mb-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                   <div className="rounded-xl bg-[#0D0D14] border border-[#2A2A3A] p-3">
                     <p className="text-xs text-[#7A7A9D] mb-1.5">Ton dominant</p>
                     <Badge variant="violet">{profile.styleProfile.dominantTone}</Badge>
@@ -333,7 +333,7 @@ export default function DashboardPage() {
                 <CardDescription>Score de tes {chartData.length} derniers posts analysés</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="h-52">
+                <div className="h-40 md:h-52">
                   <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={chartData}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#2A2A3A" />
@@ -351,7 +351,7 @@ export default function DashboardPage() {
 
         {/* Quick Actions */}
         <motion.div variants={item} className="col-span-12">
-          <div className="grid grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {[
               { href: '/audit', icon: BarChart2, label: 'Analyser mon compte', color: 'violet' },
               { href: '/import', icon: Film, label: 'Importer mes posts', color: 'pink' },

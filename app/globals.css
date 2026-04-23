@@ -81,3 +81,12 @@ h1, h2, h3, h4, h5, h6 {
 .glow-pink {
   box-shadow: 0 0 30px var(--pink-glow);
 }
+
+/* Safe area pour iPhone (encoche + barre home) */
+.safe-area-pb {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.pb-safe {
+  padding-bottom: max(12px, env(safe-area-inset-bottom));
+}

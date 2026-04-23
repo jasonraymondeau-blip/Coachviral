@@ -153,19 +153,19 @@ export default function PlanPage() {
   const photoCount = sortedDays.filter(d => d.type === 'Photo').length;
 
   return (
-    <div className="p-8">
+    <div className="p-4 md:p-8">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between mb-8">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-600 to-pink-600 flex items-center justify-center">
               <Calendar className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h1 className="font-heading text-2xl font-bold text-white">Plan stratégique</h1>
+              <h1 className="font-heading text-xl md:text-2xl font-bold text-white">Plan stratégique</h1>
               <p className="text-[#7A7A9D] text-sm">Planning éditorial hebdomadaire généré par IA selon ton profil</p>
             </div>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             {plan && (
               <Button variant="secondary" onClick={copyAllPlan}>
                 <Copy className="w-4 h-4" />

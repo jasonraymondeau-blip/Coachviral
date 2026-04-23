@@ -96,19 +96,19 @@ export default function AuditPage() {
     : [];
 
   return (
-    <div className="p-8" id="audit-content">
+    <div className="p-4 md:p-8" id="audit-content">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between mb-8">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-600 to-pink-600 flex items-center justify-center">
               <BarChart3 className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h1 className="font-heading text-2xl font-bold text-white">Audit Complet</h1>
+              <h1 className="font-heading text-xl md:text-2xl font-bold text-white">Audit Complet</h1>
               <p className="text-[#7A7A9D] text-sm">Analyse approfondie data-driven de ta stratégie Instagram</p>
             </div>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             {audit && (
               <Button variant="secondary" onClick={() => window.print()}>
                 <Printer className="w-4 h-4" />
@@ -145,7 +145,7 @@ export default function AuditPage() {
               {(audit.globalScore !== undefined || audit.criticalErrors || audit.quickWins || audit.mainStrategy) && (
                 <div className="grid grid-cols-12 gap-4">
                   {/* Global Score */}
-                  <div className="col-span-3">
+                  <div className="col-span-12 md:col-span-3">
                     <Card className="h-full flex flex-col items-center justify-center py-6">
                       <p className="text-xs text-[#7A7A9D] mb-3">Score global</p>
                       <GlobalScoreRing score={audit.globalScore ?? 0} />
@@ -158,7 +158,7 @@ export default function AuditPage() {
                   </div>
 
                   {/* Critical errors */}
-                  <div className="col-span-4">
+                  <div className="col-span-12 md:col-span-4">
                     <Card className="h-full border-red-500/20">
                       <CardHeader>
                         <CardTitle className="flex items-center gap-2 text-red-400 text-base">
@@ -178,7 +178,7 @@ export default function AuditPage() {
                   </div>
 
                   {/* Quick wins */}
-                  <div className="col-span-5">
+                  <div className="col-span-12 md:col-span-5">
                     <Card className="h-full border-emerald-500/20">
                       <CardHeader>
                         <CardTitle className="flex items-center gap-2 text-emerald-400 text-base">
@@ -216,7 +216,7 @@ export default function AuditPage() {
 
               {/* Radar + Score bars */}
               <div className="grid grid-cols-12 gap-6">
-                <div className="col-span-5">
+                <div className="col-span-12 md:col-span-5">
                   <Card>
                     <CardHeader><CardTitle>Score par pilier</CardTitle></CardHeader>
                     <CardContent>
@@ -233,7 +233,7 @@ export default function AuditPage() {
                     </CardContent>
                   </Card>
                 </div>
-                <div className="col-span-7">
+                <div className="col-span-12 md:col-span-7">
                   <Card className="h-full">
                     <CardHeader><CardTitle>Détail des scores</CardTitle></CardHeader>
                     <CardContent className="space-y-4">
@@ -253,7 +253,7 @@ export default function AuditPage() {
                     Corrélations data
                     <Badge variant="violet" className="text-xs">Calculé depuis tes posts réels</Badge>
                   </h2>
-                  <div className="grid grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {[
                       { icon: TrendingUp, color: 'violet', label: 'Hashtags vs Performance', text: audit.correlations.hashtagsVsPerformance },
                       { icon: Search, color: 'pink', label: 'Longueur caption vs Engagement', text: audit.correlations.captionLengthVsEngagement },
@@ -277,7 +277,7 @@ export default function AuditPage() {
 
               {/* Top / Worst posts */}
               {(audit.topPosts?.length || audit.worstPosts?.length) ? (
-                <div className="grid grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {audit.topPosts && audit.topPosts.length > 0 && (
                     <Card className="border-emerald-500/20">
                       <CardHeader>
@@ -328,7 +328,7 @@ export default function AuditPage() {
               ) : null}
 
               {/* Analysis sections */}
-              <div className="grid grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <Card>
                   <CardHeader>
                     <div className="flex items-center gap-2">
