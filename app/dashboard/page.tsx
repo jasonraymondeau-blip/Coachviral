@@ -106,7 +106,7 @@ export default function DashboardPage() {
 
   return (
     <div className="p-4 md:p-8">
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-4 md:mb-8">
         <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-600 to-pink-600 flex items-center justify-center">
@@ -174,31 +174,34 @@ export default function DashboardPage() {
       <motion.div variants={container} initial="hidden" animate="show" className="grid grid-cols-12 gap-6">
         {/* Virality Score */}
         <motion.div variants={item} className="col-span-12 md:col-span-4">
-          <Card className="h-full flex flex-col">
-            <CardHeader>
-              <CardTitle>Score de Viralité</CardTitle>
-              <CardDescription>Calculé depuis tes vraies métriques</CardDescription>
-            </CardHeader>
-            <CardContent className="flex-1 flex flex-col items-center justify-center gap-2">
-              <div className="relative w-44 h-44">
-                <ResponsiveContainer width="100%" height="100%">
-                  <RadialBarChart innerRadius="60%" outerRadius="100%" data={radialData} startAngle={90} endAngle={-270}>
-                    <RadialBar dataKey="value" cornerRadius={8} background={{ fill: '#1A1A24' }} />
-                  </RadialBarChart>
-                </ResponsiveContainer>
-                <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="font-heading text-4xl font-bold text-white">{viralScore}</span>
-                  <Badge variant={viralScore < 40 ? 'danger' : viralScore < 60 ? 'warning' : 'success'} className="mt-1">
+          <Card className="md:h-full">
+            <CardContent className="py-4 md:py-6">
+              <div className="flex items-center gap-4 md:flex-col md:items-center md:gap-2 md:pt-2">
+                {/* Graphique compact */}
+                <div className="relative w-24 h-24 md:w-44 md:h-44 shrink-0">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <RadialBarChart innerRadius="60%" outerRadius="100%" data={radialData} startAngle={90} endAngle={-270}>
+                      <RadialBar dataKey="value" cornerRadius={8} background={{ fill: '#1A1A24' }} />
+                    </RadialBarChart>
+                  </ResponsiveContainer>
+                  <div className="absolute inset-0 flex flex-col items-center justify-center">
+                    <span className="font-heading text-2xl md:text-4xl font-bold text-white">{viralScore}</span>
+                  </div>
+                </div>
+                {/* Infos à droite sur mobile, en dessous sur desktop */}
+                <div className="flex-1 md:text-center">
+                  <p className="font-heading text-base font-semibold text-white mb-1">Score de Viralité</p>
+                  <p className="text-[#7A7A9D] text-xs mb-2">Calculé depuis tes vraies métriques</p>
+                  <Badge variant={viralScore < 40 ? 'danger' : viralScore < 60 ? 'warning' : 'success'}>
                     {getScoreLabel(viralScore)}
                   </Badge>
+                  {hasStyle && profile?.styleProfile && (
+                    <div className="mt-2">
+                      <Badge variant="violet">{profile.styleProfile.dominantTone}</Badge>
+                    </div>
+                  )}
                 </div>
               </div>
-              {hasStyle && profile?.styleProfile && (
-                <div className="mt-1 text-center">
-                  <p className="text-xs text-[#7A7A9D] mb-1">Ton d&apos;écriture</p>
-                  <Badge variant="violet">{profile.styleProfile.dominantTone}</Badge>
-                </div>
-              )}
             </CardContent>
           </Card>
         </motion.div>
@@ -214,19 +217,14 @@ export default function DashboardPage() {
               { label: 'Score moyen IA', value: metrics.avgScore > 0 ? `${metrics.avgScore}/100` : '—', sub: metrics.analysedPosts > 0 ? `${metrics.analysedPosts} posts analysés` : 'analyse un post', icon: BarChart2, color: 'violet' },
               { label: 'Meilleur jour', value: metrics.bestDay, sub: hasMetrics ? 'par engagement moyen' : 'données insuffisantes', icon: MessageCircle, color: 'pink' },
             ].map(stat => (
-              <Card key={stat.label} className="flex items-center gap-4">
-                <div className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 ${stat.color === 'violet' ? 'bg-violet-500/10' : 'bg-pink-500/10'}`}>
-                  <stat.icon className={`w-5 h-5 ${stat.color === 'violet' ? 'text-violet-400' : 'text-pink-400'}`} />
+              <Card key={stat.label} className="flex items-center gap-2 md:gap-4 p-3 md:p-4">
+                <div className={`w-9 h-9 md:w-11 md:h-11 rounded-xl flex items-center justify-center shrink-0 ${stat.color === 'violet' ? 'bg-violet-500/10' : 'bg-pink-500/10'}`}>
+                  <stat.icon className={`w-4 h-4 md:w-5 md:h-5 ${stat.color === 'violet' ? 'text-violet-400' : 'text-pink-400'}`} />
                 </div>
-                <div className="min-w-0">
-                  <p className="text-[#7A7A9D] text-xs">{stat.label}</p>
-                  <div className="flex items-center gap-2">
-                    <p className="font-heading text-xl font-bold text-white truncate">{stat.value}</p>
-                    {'badge' in stat && stat.badge && stat.badgeLabel && (
-                      <Badge variant={stat.badge} className="shrink-0">{stat.badgeLabel}</Badge>
-                    )}
-                  </div>
-                  <p className="text-[#7A7A9D] text-xs truncate">{stat.sub}</p>
+                <div className="min-w-0 flex-1">
+                  <p className="text-[#7A7A9D] text-[10px] md:text-xs leading-tight truncate">{stat.label}</p>
+                  <p className="font-heading text-base md:text-xl font-bold text-white truncate">{stat.value}</p>
+                  <p className="text-[#7A7A9D] text-[10px] md:text-xs truncate">{stat.sub}</p>
                 </div>
               </Card>
             ))}

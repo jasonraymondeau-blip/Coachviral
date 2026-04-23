@@ -16,8 +16,8 @@ export function BottomNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#0D0D14] border-t border-[#2A2A3A] safe-area-pb">
-      <div className="flex items-center justify-around px-2 pb-safe">
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#0D0D14]/95 backdrop-blur-md border-t border-[#2A2A3A]">
+      <div className="flex items-center justify-around" style={{ paddingBottom: 'max(8px, env(safe-area-inset-bottom))' }}>
         {navItems.map(item => {
           const active = pathname === item.href;
           const Icon = item.icon;
@@ -25,19 +25,16 @@ export function BottomNav() {
             <Link
               key={item.href}
               href={item.href}
-              className={cn(
-                'flex flex-col items-center gap-1 px-3 py-3 rounded-xl transition-all duration-200 min-w-[60px]',
-                active ? 'text-violet-400' : 'text-[#7A7A9D]'
-              )}
+              className="flex flex-col items-center justify-center gap-1 py-2 flex-1"
             >
               <div className={cn(
-                'w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-200',
-                active ? 'bg-violet-500/20' : 'bg-transparent'
+                'w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-200',
+                active ? 'bg-violet-500/25' : 'bg-transparent'
               )}>
-                <Icon className="w-5 h-5" />
+                <Icon className={cn('w-[18px] h-[18px]', active ? 'text-violet-400' : 'text-[#7A7A9D]')} />
               </div>
               <span className={cn(
-                'text-[10px] font-medium leading-none',
+                'text-[10px] font-medium leading-none truncate w-full text-center px-1',
                 active ? 'text-violet-400' : 'text-[#7A7A9D]'
               )}>
                 {item.label}

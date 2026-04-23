@@ -266,9 +266,9 @@ export default function ImportPage() {
   };
 
   const tabs = [
-    { id: 'username', icon: User, label: '@username — Auto', badge: 'Recommandé' },
-    { id: 'zip', icon: FileJson, label: 'Export ZIP' },
-    { id: 'screenshot', icon: Camera, label: 'Screenshots Insights' },
+    { id: 'username', icon: User, label: '@username', labelFull: '@username — Auto', badge: 'Recommandé' },
+    { id: 'zip', icon: FileJson, label: 'ZIP', labelFull: 'Export ZIP' },
+    { id: 'screenshot', icon: Camera, label: 'Photos', labelFull: 'Screenshots Insights' },
   ] as const;
 
   return (
@@ -280,7 +280,7 @@ export default function ImportPage() {
           </div>
           <div>
             <h1 className="font-heading text-xl md:text-2xl font-bold text-white">Import de données</h1>
-            <p className="text-[#7A7A9D] text-sm">Récupère automatiquement tes posts Instagram avec likes et commentaires</p>
+            <p className="text-[#7A7A9D] text-xs md:text-sm">Récupère tes posts Instagram avec likes et commentaires</p>
           </div>
         </div>
 
@@ -288,13 +288,14 @@ export default function ImportPage() {
         <div className="flex gap-1 mb-6 p-1 bg-[#13131A] rounded-xl border border-[#2A2A3A]">
           {tabs.map(tab => (
             <button key={tab.id} onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer flex-1 justify-center ${
+              className={`flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-lg text-xs font-medium transition-all duration-200 cursor-pointer flex-1 ${
                 activeTab === tab.id ? 'bg-gradient-to-r from-violet-600 to-pink-600 text-white' : 'text-[#7A7A9D] hover:text-white'
               }`}>
-              <tab.icon className="w-4 h-4" />
-              {tab.label}
+              <tab.icon className="w-4 h-4 shrink-0" />
+              <span className="sm:hidden">{tab.label}</span>
+              <span className="hidden sm:inline">{'labelFull' in tab ? tab.labelFull : tab.label}</span>
               {'badge' in tab && tab.badge && activeTab !== tab.id && (
-                <span className="text-xs px-1.5 py-0.5 rounded-md bg-emerald-500/20 text-emerald-400">{tab.badge}</span>
+                <span className="hidden md:inline text-[10px] px-1 py-0.5 rounded-md bg-emerald-500/20 text-emerald-400">✓</span>
               )}
             </button>
           ))}
