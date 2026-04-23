@@ -4,7 +4,13 @@ import { Sidebar } from '@/components/layout/Sidebar';
 
 export const metadata: Metadata = {
   title: 'CoachViral — Instagram Growth Coach',
-  description: "Boostez votre croissance Instagram avec l'IA",
+  description: "Ton coach Instagram IA — stratégie virale personnalisée",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'CoachViral',
+  },
+  formatDetection: { telephone: false },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
