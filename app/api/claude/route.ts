@@ -544,6 +544,157 @@ Si une métrique n'est pas visible, mets null.`,
         break;
       }
 
+      // ── V2 Actions ────────────────────────────────────────────────────────────
+
+      case 'generateDailyAction': {
+        const { profile, posts: daPosts, weeklyPlan } = params as { profile: UserProfile; posts: Post[]; weeklyPlan?: unknown };
+        const dayNames = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+        const today = dayNames[new Date().getDay()];
+        const json = await callModel(
+          `${baseSystem}\n${profileContext(profile, daPosts)}`,
+          `C'est ${today}. Génère le plan d'action d'aujourd'hui pour @${profile.username}.
+Plan de la semaine disponible: ${weeklyPlan ? JSON.stringify(weeklyPlan) : 'non généré encore'}.
+
+Retourne un JSON avec cette structure exacte:
+{
+  "reelTitle": "Titre du Reel à filmer aujourd'hui",
+  "reelHook": "Hook exact à dire face caméra",
+  "reelDuration": "22 secondes",
+  "plansToFilm": ["Plan 1: face caméra intro", "Plan 2: lifestyle/extérieur", "Plan 3: texte à l'écran", "Plan 4: outro CTA"],
+  "storiesToPost": [
+    { "order": 1, "type": "poll", "text": "Texte de la story", "visual": "Description visuelle", "interactive": "Question du sondage" },
+    { "order": 2, "type": "teaser", "text": "Texte teaser", "visual": "Description visuelle" },
+    { "order": 3, "type": "cta", "text": "Texte CTA", "visual": "Description visuelle" }
+  ],
+  "ctaOfTheDay": "CTA précis à utiliser dans le Reel et stories",
+  "contentObjective": "acquisition|engagement|fidelisation|vente"
+}
+Tout doit être ultra concret, adapté à la niche ${profile.niche} de @${profile.username}.`
+        );
+        result = JSON.parse(json);
+        break;
+      }
+
+      case 'generateHooks': {
+        const { profile: hookProfile, category, topic } = params as { profile: UserProfile; category: string; topic: string };
+        const json = await callModel(
+          `${baseSystem}\n${profileContext(hookProfile)}`,
+          `Génère 8 hooks Instagram pour @${hookProfile.username} dans la catégorie "${category}" sur le sujet: "${topic}".
+Niche: ${hookProfile.niche}.
+
+Retourne un JSON:
+{
+  "category": "${category}",
+  "categoryLabel": "Libellé français",
+  "hooks": [
+    { "text": "Hook complet", "intensity": "soft|medium|aggressive", "length": "short|long" },
+    { "text": "Hook complet", "intensity": "soft|medium|aggressive", "length": "short|long" },
+    { "text": "Hook complet", "intensity": "soft|medium|aggressive", "length": "short|long" },
+    { "text": "Hook complet", "intensity": "soft|medium|aggressive", "length": "short|long" },
+    { "text": "Hook complet", "intensity": "soft|medium|aggressive", "length": "short|long" },
+    { "text": "Hook complet", "intensity": "soft|medium|aggressive", "length": "short|long" },
+    { "text": "Hook complet", "intensity": "soft|medium|aggressive", "length": "short|long" },
+    { "text": "Hook complet", "intensity": "soft|medium|aggressive", "length": "short|long" }
+  ]
+}
+Les hooks doivent être personnalisés à la niche "${hookProfile.niche}" et au ton "${hookProfile.tone}".
+Mix: 2 soft courts, 2 soft longs, 2 medium, 1 aggressive court, 1 aggressive long.`
+        );
+        result = JSON.parse(json);
+        break;
+      }
+
+      case 'generateStories': {
+        const { profile: spProfile, posts: spPosts, objective } = params as { profile: UserProfile; posts: Post[]; objective: string };
+        const dayNames2 = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+        const today2 = dayNames2[new Date().getDay()];
+        const json = await callModel(
+          `${baseSystem}\n${profileContext(spProfile, spPosts)}`,
+          `Génère le plan stories Instagram pour @${spProfile.username} aujourd'hui (${today2}).
+Objectif: ${objective || spProfile.goal}.
+
+Retourne un JSON:
+{
+  "date": "${today2}",
+  "theme": "Thème cohérent des stories du jour",
+  "goal": "Objectif des stories",
+  "stories": [
+    { "order": 1, "type": "lifestyle", "text": "Texte exact à afficher", "visual": "Description du visuel à utiliser", "interactive": null },
+    { "order": 2, "type": "poll", "text": "Texte de la story", "visual": "Fond suggéré", "interactive": "Question | Option A | Option B" },
+    { "order": 3, "type": "behind-scenes", "text": "Texte coulisses", "visual": "Description visuelle", "interactive": null },
+    { "order": 4, "type": "teaser", "text": "Texte teaser Reel", "visual": "Aperçu flou ou extrait", "interactive": null },
+    { "order": 5, "type": "cta", "text": "Texte CTA direct", "visual": "Fond coloré / texte gros", "interactive": "Swipe up ou lien sticker" }
+  ]
+}
+Les stories doivent raconter une histoire cohérente sur la journée et la niche ${spProfile.niche}.`
+        );
+        result = JSON.parse(json);
+        break;
+      }
+
+      case 'generateReelBuilder': {
+        const { profile: rbProfile, posts: rbPosts, topic, duration } = params as { profile: UserProfile; posts: Post[]; topic: string; duration: number };
+        const json = await callModel(
+          `${baseSystem}\n${profileContext(rbProfile, rbPosts)}`,
+          `Génère un Reel complet et détaillé pour @${rbProfile.username} sur le sujet: "${topic}".
+Durée cible: ${duration} secondes. Niche: ${rbProfile.niche}.
+
+Retourne un JSON avec cette structure exacte:
+{
+  "hook": "Hook principal (première phrase face caméra)",
+  "hookVariants": ["variante 1", "variante 2", "variante 3"],
+  "scenes": [
+    { "order": 1, "type": "face-cam", "description": "Ce que tu fais/dis dans ce plan", "duration": 3, "screenText": "Texte à afficher à l'écran", "emotion": "Émotion recherchée" },
+    { "order": 2, "type": "broll", "description": "Plan lifestyle ou b-roll", "duration": 4, "screenText": null, "emotion": "Émotion" },
+    { "order": 3, "type": "text", "description": "Plan texte pur", "duration": 3, "screenText": "Texte à l'écran", "emotion": "Émotion" },
+    { "order": 4, "type": "face-cam", "description": "Suite face caméra", "duration": 5, "screenText": null, "emotion": "Émotion" },
+    { "order": 5, "type": "lifestyle", "description": "Plan lifestyle", "duration": 4, "screenText": null, "emotion": "Émotion" },
+    { "order": 6, "type": "face-cam", "description": "CTA face caméra", "duration": 3, "screenText": "CTA à l'écran", "emotion": "Urgence/Invitation" }
+  ],
+  "script": "Script complet mot à mot pour les parties face caméra",
+  "cta": "Call-to-action exact à dire et afficher",
+  "caption": "Légende complète avec emojis et structure",
+  "hashtags": ["#hashtag1", "#hashtag2", "#hashtag3", "#hashtag4", "#hashtag5", "#hashtag6", "#hashtag7", "#hashtag8", "#hashtag9", "#hashtag10"],
+  "pinnedComment": "Commentaire épinglé à poster après publication",
+  "totalDuration": ${duration},
+  "targetEmotion": "Émotion principale que l'audience doit ressentir",
+  "musicMood": "Type de musique recommandée (ex: upbeat, cinématique, trap, lo-fi)"
+}
+Tout doit être ultra personnalisé à la niche "${rbProfile.niche}" et au ton "${rbProfile.tone}" de @${rbProfile.username}.`
+        );
+        result = JSON.parse(json);
+        break;
+      }
+
+      case 'viralRemix': {
+        const { profile: vrProfile, viralScript, targetTopic } = params as { profile: UserProfile; viralScript: string; targetTopic: string };
+        const json = await callModel(
+          `${baseSystem}\n${profileContext(vrProfile)}`,
+          `Analyse ce script/contenu viral et adapte-le à la niche de @${vrProfile.username}.
+
+CONTENU VIRAL À ANALYSER:
+${viralScript}
+
+ADAPTATION DEMANDÉE:
+- Sujet cible: ${targetTopic || 'même sujet adapté à la niche'}
+- Niche: ${vrProfile.niche}
+- Ton: ${vrProfile.tone}
+
+Retourne un JSON:
+{
+  "originalStructure": "Analyse de la structure du contenu viral (hook, développement, CTA)",
+  "viralTechniques": ["Technique 1", "Technique 2", "Technique 3"],
+  "adaptedHook": "Hook adapté à ta niche",
+  "adaptedScript": "Script complet adapté",
+  "adaptedCaption": "Légende adaptée",
+  "adaptedHashtags": ["#hashtag1", "#hashtag2", "#hashtag3", "#hashtag4", "#hashtag5"],
+  "keyInsight": "Ce qui rend ce contenu viral et comment tu l'as appliqué"
+}`
+        );
+        result = JSON.parse(json);
+        break;
+      }
+
       default:
         return NextResponse.json({ error: 'Action inconnue' }, { status: 400 });
     }

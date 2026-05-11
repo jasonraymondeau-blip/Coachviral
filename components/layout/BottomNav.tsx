@@ -1,15 +1,15 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Download, FileText, Calendar, BarChart3 } from 'lucide-react';
+import { LayoutDashboard, Film, Zap, BookOpen, Calendar } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const navItems = [
-  { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/posts',     label: 'Posts',     icon: FileText },
-  { href: '/import',   label: 'Importer',  icon: Download },
-  { href: '/plan',     label: 'Plan',      icon: Calendar },
-  { href: '/audit',    label: 'Audit',     icon: BarChart3 },
+  { href: '/dashboard', labelFull: 'Aujourd\'hui', icon: LayoutDashboard },
+  { href: '/scripts',   labelFull: 'Reel',        icon: Film },
+  { href: '/hooks',     labelFull: 'Hooks',        icon: Zap },
+  { href: '/stories',   labelFull: 'Stories',      icon: BookOpen },
+  { href: '/plan',      labelFull: 'Plan',         icon: Calendar },
 ];
 
 export function BottomNav() {
@@ -37,7 +37,7 @@ export function BottomNav() {
                 'text-[10px] font-medium leading-none truncate w-full text-center px-1',
                 active ? 'text-violet-400' : 'text-[#7A7A9D]'
               )}>
-                {item.label}
+                {item.labelFull}
               </span>
             </Link>
           );

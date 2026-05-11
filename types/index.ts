@@ -196,3 +196,69 @@ export interface ViralityScore {
     nicheConsistency: number;
   };
 }
+
+// ─── V2 FEATURES ─────────────────────────────────────────────────────────────
+
+export interface ReelScene {
+  order: number;
+  type: 'face-cam' | 'lifestyle' | 'text' | 'broll' | 'transition';
+  description: string;
+  duration: number; // seconds
+  screenText?: string;
+  emotion: string;
+}
+
+export interface ReelBuilder {
+  hook: string;
+  hookVariants: string[];
+  scenes: ReelScene[];
+  script: string;
+  cta: string;
+  caption: string;
+  hashtags: string[];
+  pinnedComment: string;
+  totalDuration: number;
+  targetEmotion: string;
+  musicMood: string;
+}
+
+export type HookCategory = 'emotion' | 'curiosity' | 'controversy' | 'storytelling' | 'luxury' | 'business' | 'lifestyle';
+
+export interface HookVariant {
+  text: string;
+  intensity: 'soft' | 'medium' | 'aggressive';
+  length: 'short' | 'long';
+}
+
+export interface HookSet {
+  category: HookCategory;
+  categoryLabel: string;
+  hooks: HookVariant[];
+}
+
+export interface StoryIdea {
+  order: number;
+  type: 'poll' | 'question' | 'teaser' | 'behind-scenes' | 'social-proof' | 'cta' | 'lifestyle';
+  text: string;
+  visual: string;
+  interactive?: string;
+}
+
+export interface StoryPlan {
+  date: string;
+  theme: string;
+  stories: StoryIdea[];
+  goal: string;
+}
+
+export interface DailyAction {
+  reelTitle: string;
+  reelHook: string;
+  reelDuration: string;
+  plansToFilm: string[];
+  storiesToPost: StoryIdea[];
+  ctaOfTheDay: string;
+  contentObjective: string;
+}
+
+export type ContentDirection = 'acquisition' | 'engagement' | 'fidelisation' | 'vente' | 'autorite' | 'branding';

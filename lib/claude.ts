@@ -2,6 +2,7 @@ import {
   UserProfile, Post, PostAnalysis, Idea, IdeaParams, Script, Caption,
   HashtagSet, AuditReport, ContentScore, WeeklyPlan, DailyCoach,
   ScreenshotMetrics, StyleProfile, EnhancedContent,
+  DailyAction, HookSet, StoryPlan, ReelBuilder,
 } from '@/types';
 
 async function callClaude(action: string, params: Record<string, unknown>): Promise<unknown> {
@@ -88,4 +89,52 @@ export async function analyzeScreenshot(
   mediaType: string
 ): Promise<ScreenshotMetrics> {
   return callClaude('analyzeScreenshot', { imageBase64, mediaType }) as Promise<ScreenshotMetrics>;
+}
+
+// ── V2 functions ──────────────────────────────────────────────────────────────
+
+/** Generate the actionable daily content plan (what to film + stories today) */
+export async function generateDailyAction(
+  profile: UserProfile,
+  posts: Post[],
+  weeklyPlan?: unknown
+): Promise<DailyAction> {
+  return callClaude('generateDailyAction', { profile, posts, weeklyPlan }) as Promise<DailyAction>;
+}
+
+/** Generate a set of hooks by category for a given topic */
+export async function generateHooks(
+  profile: UserProfile,
+  category: string,
+  topic: string
+): Promise<HookSet> {
+  return callClaude('generateHooks', { profile, category, topic }) as Promise<HookSet>;
+}
+
+/** Generate a daily story plan */
+export async function generateStories(
+  profile: UserProfile,
+  posts: Post[],
+  objective?: string
+): Promise<StoryPlan> {
+  return callClaude('generateStories', { profile, posts, objective }) as Promise<StoryPlan>;
+}
+
+/** Generate a full Reel with storyboard, script, caption, hashtags, pinned comment */
+export async function generateReelBuilder(
+  profile: UserProfile,
+  posts: Post[],
+  topic: string,
+  duration: number
+): Promise<ReelBuilder> {
+  return callClaude('generateReelBuilder', { profile, posts, topic, duration }) as Promise<ReelBuilder>;
+}
+
+/** Remix a viral script/reel adapted to user's niche */
+export async function viralRemix(
+  profile: UserProfile,
+  viralScript: string,
+  targetTopic?: string
+): Promise<{ originalStructure: string; viralTechniques: string[]; adaptedHook: string; adaptedScript: string; adaptedCaption: string; adaptedHashtags: string[]; keyInsight: string }> {
+  return callClaude('viralRemix', { profile, viralScript, targetTopic }) as Promise<{ originalStructure: string; viralTechniques: string[]; adaptedHook: string; adaptedScript: string; adaptedCaption: string; adaptedHashtags: string[]; keyInsight: string }>;
 }
